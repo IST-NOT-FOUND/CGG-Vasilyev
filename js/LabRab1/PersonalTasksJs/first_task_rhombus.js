@@ -1,17 +1,30 @@
 var gl;
 var shaderProgram;
 var vertexBuffer;
-// установка шейдеров
+
+function changeColor() {
+    dict ='0123456789ABCDEF'
+
+    var color="#"
+
+    for (var i=0; i<6;i++) {
+        color+=dict[Math.floor(Math.random()*16)]
+    }
+
+    return color;
+}
+
+
 function initShaders() {
-    // получаем шейдеры
+    
     var fragmentShader = getShader(gl.FRAGMENT_SHADER, 'shader-fs');
     var vertexShader = getShader(gl.VERTEX_SHADER, 'shader-vs');
-    //создаем объект программы шейдеров
+    
     shaderProgram = gl.createProgram();
-    // прикрепляем к ней шейдеры
+
     gl.attachShader(shaderProgram, vertexShader);
     gl.attachShader(shaderProgram, fragmentShader);
-    // связываем программу с контекстом webgl
+
     gl.linkProgram(shaderProgram);
       
     if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
@@ -19,19 +32,19 @@ function initShaders() {
     }
       
     gl.useProgram(shaderProgram);
-    // установка атрибута программы
+ 
     shaderProgram.vertexPositionAttribute = gl.getAttribLocation(shaderProgram, "aVertexPosition");
-    // делаем доступным атрибут для использования
+
     gl.enableVertexAttribArray(shaderProgram.vertexPositionAttribute);
 }
-// Функция создания шейдера по типу и id источника в структуре DOM
+
 function getShader(type,id) {
     var source = document.getElementById(id).innerHTML;
-    // создаем шейдер по типу
+
     var shader = gl.createShader(type);
-    // установка источника шейдера
+  
     gl.shaderSource(shader, source);
-    // компилируем шейдер
+  
     gl.compileShader(shader);
    
     if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
@@ -41,9 +54,9 @@ function getShader(type,id) {
     }
     return shader;  
 }
-// установка буфера вершин 
+
 function initBuffers() {
- // установка буфера вершин
+
   vertexBuffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
   // массив координат вершин объекта
@@ -58,7 +71,7 @@ function initBuffers() {
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(rhombusVertices), gl.STATIC_DRAW);
   // указываем кол-во точек
   vertexBuffer.itemSize = 3;
-  //vertexBuffer.numberOfItems = 4;
+  
   indexBuffer = gl.createBuffer();
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
   gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), gl.STATIC_DRAW);
@@ -75,11 +88,12 @@ function draw() {
     // указываем, что каждая вершина имеет по три координаты (x, y, z)
     gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, 
                          vertexBuffer.itemSize, gl.FLOAT, false, 0, 0);
-    // отрисовка примитивов - треугольников          
+    // отрисовка примитивов - линий         
     gl.drawElements(gl.LINE_LOOP, indexBuffer.numberOfItems, gl.UNSIGNED_SHORT,0);
 }
   
 window.onload=function(){
+    document.getElementById("changeColorButton").addEventListener("click", changeColor);
     // получаем элемент canvas
     var canvas = document.getElementById("canvas3D");
     try {
@@ -104,6 +118,6 @@ window.onload=function(){
         // покрасим фон в бледно-розовый цвет
         gl.clearColor(1.0, 0.0, 0.0, 0.5);
         // отрисовка сцены
-        draw();  
+        draw();   
     }
 }
