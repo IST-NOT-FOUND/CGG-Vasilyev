@@ -19,7 +19,18 @@
         <li class="breadcrumb-item"><a href="../labrab1.html">Лабораторная 1</a></li>
         <li class="breadcrumb-item active">Дополнительное задание 1</li>
     </ol>
-<canvas id="canvas3D" width="400" height="300">Ваш браузер не поддерживает элемент canvas</canvas>
+    <div id="main-cointainer" align="center">
+        <div id="canvas-wrapper">
+          <canvas id="canvas3D" width="400" height="300" align="center">Ваш браузер не поддерживает элемент canvas
+          </canvas>
+        </div>
+        <div id="buttons-wrapper">
+          <button id="changeColorButton" class="btn-success">
+          Нажми на кнопку - получишь результат!
+          </button>
+        </div>
+    </div>
+
 <!-- фрагментный шейдер -->
 <script id="shader-fs" type="x-shader/x-fragment">
   void main(void) {
@@ -33,6 +44,7 @@
     gl_Position = vec4(aVertexPosition, 1.0);
   }
 </script>
+
 <script src="../../js/jquery-3.2.1.min.js" type="text/javascript"></script>
 <script src="../../js/umd/popper.min.js"></script>
 <script src="../../js/bootstrap.min.js" type="text/javascript"></script>
