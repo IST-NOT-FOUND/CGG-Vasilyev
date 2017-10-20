@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+<title>Дополнительное задание 1</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="../../css/bootstrap/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="../../index.html">Васильев Р.С. | Компьютерная геометрия и графика</a>
+            </div>
+        </div>
+    </nav>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="../../index.html">Главная</a></li>
+        <li class="breadcrumb-item"><a href="../labrab1.html">Лабораторная 1</a></li>
+        <li class="breadcrumb-item active">Дополнительное задание 1</li>
+    </ol>
+    <div id="main-cointainer" align="center">
+        <div id="canvas-wrapper">
+          <canvas id="canvas3D" width="700" height="600">Ваш браузер не поддерживает элемент canvas
+          </canvas>
+        </div>
+        <div id="buttons-wrapper">
+          <button id="changeColorButton" class="btn-success">
+          Нажми на кнопку - получишь результат!
+          </button>
+        </div>
+    </div>
+
+ 
+  <script id="shader-fs" type="x-shader/x-fragment">
+    varying highp vec4 vColor;
+    void main(void) {
+      gl_FragColor = vColor;
+    }
+  </script>
+
+  <script id="shader-vs" type="x-shader/x-vertex">
+    attribute vec3 aVertexPosition;
+    attribute vec3 aVertexColor;
+    varying highp vec4 vColor;
+    void main(void) {
+        gl_Position = vec4(aVertexPosition, 1.0);
+        vColor = vec4(aVertexColor, 1.0);
+    }
+</script>
+
+<script src="../../js/jquery-3.2.1.min.js" type="text/javascript"></script>
+<script src="../../js/umd/popper.min.js"></script>
+<script src="../../js/bootstrap.min.js" type="text/javascript"></script>
+<!-- <script src="../../js/LabRab1/PersonalTasksJs/first_task_rhombus.js" type="text/javascript"></script> -->
+<script src="../../js/LabRab1/PersonalTasksJs/first_task_rhombus.js" type="text/javascript"></script>
+</body>
+</html>
