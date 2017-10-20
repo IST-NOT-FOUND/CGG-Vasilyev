@@ -4,7 +4,6 @@ var vertexBuffer;
 var colorBuffer;
 
 
-
 function initShaders() {
     
     var fragmentShader = getShader(gl.FRAGMENT_SHADER, 'shader-fs');
@@ -48,43 +47,35 @@ function getShader(type,id) {
 function initBuffers() {
 
     var vertices = [
-        0.0, 0.5, 0.0,
-        0.5, 1.0, 0.0,
-        1.0, 0.5, 0.0,
-        0.5, 0.0, 0.0,
-        0.0 ,0.5, 0.0,
-        1.0, 0.5, 0.0,
-    ]
+        -0.8, 0.0, 0.0,
+        0.0, 0.4, 0.0,
+        0.8,0.0,0.0,
+        0.0,-0.4, 0.0,
 
+    ]
     vertexBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
     vertexBuffer.itemSize = 3;
-    vertexBuffer.numberOfItems = 6;
+    indicesTriag = [0,1,2,2,3,0]
 
+    indexBufferTriag = gl.createBuffer();
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBufferTriag);
+    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indicesTriag), gl.STATIC_DRAW);
+  
+    indexBufferTriag.numberOfItems = indicesTriag.length;
 
-    x = getRandomValue(15, 200);
-    y = getRandomValue(15, 200);
-    z = getRandomValue(15, 200);
-    q = getRandomValue(15, 200);
-    w = getRandomValue(15, 200);
-    i = getRandomValue(15, 200);
+    var x = y = z = getRandomValue(0, 200);
+    var q = w = i = getRandomValue(0, 200);
     var сolors = [
           x, y, z,
           x, y, z,
-          x, y, z,
+          x,y,z,
           q, w, i,
           q, w, i,
-          q, w, i
+          q,w,i,
       ];
-    // var сolors = [
-    //     1.0, 0.0, 0.0, 
-    //     1.0, 0.0, 0.0, 
-    //     1.0, 0.0, 0.0, 
-    //     0.0, 1.0, 1.0, 
-    //     0.0, 1.0, 1.0, 
-    //     0.0, 1.0, 1.0
-    // ];
+
 
       colorBuffer = gl.createBuffer();
       gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
@@ -93,7 +84,7 @@ function initBuffers() {
 
 function draw() {
     
-        gl.clearColor(0.0, 1.0, 0.5, 1.0);
+        gl.clearColor(getRandomValue(0, 100), getRandomValue(0, 100), getRandomValue(0, 100), getRandomValue(0, 100));
         gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
         gl.clear(gl.COLOR_BUFFER_BIT);
     
@@ -105,11 +96,13 @@ function draw() {
         gl.vertexAttribPointer(shaderProgram.vertexColorAttribute,
                             vertexBuffer.itemSize, gl.FLOAT, false, 0, 0);
     
-        gl.drawArrays(gl.TRIANGLE_STRIP, 0, vertexBuffer.numberOfItems);
+        gl.drawElements(gl.TRIANGLES, indexBufferTriag.numberOfItems, gl.UNSIGNED_SHORT,0)
+        
     }
         
 window.onload=function(){
         
+            document.getElementById("changeColorButton").addEventListener('click', changeColor);
             var canvas = document.getElementById("canvas3D");
             try {
                 gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
@@ -135,3 +128,7 @@ function getRandomValue(min, max) {
     return (Math.random() * (max - min) + min) / 100;
 }
 
+function changeColor() {
+    initBuffers();
+    draw();
+}
