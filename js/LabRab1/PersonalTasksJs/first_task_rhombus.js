@@ -57,43 +57,45 @@ function getShader(type,id) {
 
 function initBuffers() {
 
-  vertexBuffer = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+  
   // массив координат вершин объекта
   var rhombusVertices = [
-         -0.8,  0.0,  0.0,
-        0.0, 0.8,  0.0,
-         0.8, 0.0,  0.0,
-         0.0, -0.8,  0.0
+         -0.8,  0.0,  0.0, //1 вершина
+        0.0, 0.8,  0.0,//2
+         0.8, 0.0,  0.0, //3
+         0.0, -0.8,  0.0, //4
+         -0.8,  0.0,  0.0 //5
   ];
-  indices = [0, 1, 2, 3, 0,2];
+
+  diagonal = [0, 2];
+  vertexBuffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(rhombusVertices), gl.STATIC_DRAW);
   // указываем кол-во точек
   vertexBuffer.itemSize = 3;
-  
-  indexBuffer = gl.createBuffer();
-  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
-  gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), gl.STATIC_DRAW);
-  // указываем число линий. это число равно числу индексов
-  indexBuffer.numberOfItems = indices.length;
+  vertexBuffer.numberOfItems=5;
+  diagonalBuffer = gl.createBuffer();
+  diagonalBuffer.numberOfItems = diagonal.length;
 }
 // отрисовка 
 function draw() {    
     // установка области отрисовки
-    gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
+    
  
+    gl.clearColor(0.0, 0.0, 1.0, 1.0);
+    gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
     gl.clear(gl.COLOR_BUFFER_BIT);
    
     // указываем, что каждая вершина имеет по три координаты (x, y, z)
     gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, 
                          vertexBuffer.itemSize, gl.FLOAT, false, 0, 0);
     // отрисовка примитивов - линий         
-    gl.drawElements(gl.LINE_LOOP, indexBuffer.numberOfItems, gl.UNSIGNED_SHORT,0);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, vertexBuffer.numberOfItems);
+    gl.drawElements(gl.LINES, diagonalBuffer.numberOfItems, gl.UNSIGNED_SHORT,0);
 }
   
 window.onload=function(){
-    document.getElementById("changeColorButton").addEventListener("click", changeColor);
+    //document.getElementById("changeColorButton").addEventListener("click", changeColor);
     // получаем элемент canvas
     var canvas = document.getElementById("canvas3D");
     try {
@@ -116,7 +118,7 @@ window.onload=function(){
         // установка буфера вершин
         initBuffers();
         // покрасим фон в бледно-розовый цвет
-        gl.clearColor(1.0, 0.0, 0.0, 0.5);
+        //gl.clearColor(1.0, 0.0, 0.0, 0.5);
         // отрисовка сцены
         draw();   
     }
