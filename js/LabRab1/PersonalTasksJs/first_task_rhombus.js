@@ -1,18 +1,7 @@
 var gl;
 var shaderProgram;
 var vertexBuffer;
-
-function changeColor() {
-    dict ='0123456789ABCDEF'
-
-    var color="#"
-
-    for (var i=0; i<6;i++) {
-        color+=dict[Math.floor(Math.random()*16)]
-    }
-
-    return color;
-}
+var colorBuffer;
 
 
 function initShaders() {
@@ -32,10 +21,10 @@ function initShaders() {
     }
       
     gl.useProgram(shaderProgram);
- 
     shaderProgram.vertexPositionAttribute = gl.getAttribLocation(shaderProgram, "aVertexPosition");
-
     gl.enableVertexAttribArray(shaderProgram.vertexPositionAttribute);
+    shaderProgram.vertexColorAttribute = gl.getAttribLocation(shaderProgram, "aVertexColor");
+    gl.enableVertexAttribArray(shaderProgram.vertexColorAttribute);
 }
 
 function getShader(type,id) {
@@ -57,69 +46,89 @@ function getShader(type,id) {
 
 function initBuffers() {
 
-  
-  // массив координат вершин объекта
-  var rhombusVertices = [
-         -0.8,  0.0,  0.0, //1 вершина
-        0.0, 0.8,  0.0,//2
-         0.8, 0.0,  0.0, //3
-         0.0, -0.8,  0.0, //4
-         -0.8,  0.0,  0.0 //5
-  ];
+    var vertices = [
+        -0.8, 0.0, 0.0,
+        0.0, 0.4, 0.0,
+        0.8,0.0,0.0,
+        0.0,-0.4, 0.0,
 
-  diagonal = [0, 2];
-  vertexBuffer = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(rhombusVertices), gl.STATIC_DRAW);
-  // указываем кол-во точек
-  vertexBuffer.itemSize = 3;
-  vertexBuffer.numberOfItems=5;
-  diagonalBuffer = gl.createBuffer();
-  diagonalBuffer.numberOfItems = diagonal.length;
-}
-// отрисовка 
-function draw() {    
-    // установка области отрисовки
-    
- 
-    gl.clearColor(0.0, 0.0, 1.0, 1.0);
-    gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
-    gl.clear(gl.COLOR_BUFFER_BIT);
-   
-    // указываем, что каждая вершина имеет по три координаты (x, y, z)
-    gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, 
-                         vertexBuffer.itemSize, gl.FLOAT, false, 0, 0);
-    // отрисовка примитивов - линий         
-    gl.drawArrays(gl.TRIANGLE_STRIP, 0, vertexBuffer.numberOfItems);
-    gl.drawElements(gl.LINES, diagonalBuffer.numberOfItems, gl.UNSIGNED_SHORT,0);
-}
+    ]
+    vertexBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+    vertexBuffer.itemSize = 3;
+    indicesTriag = [0,1,2,2,3,0]
+
+    indexBufferTriag = gl.createBuffer();
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBufferTriag);
+    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indicesTriag), gl.STATIC_DRAW);
   
+    indexBufferTriag.numberOfItems = indicesTriag.length;
+
+    var x = y = z = getRandomValue(0, 200);
+    var q = w = i = getRandomValue(0, 200);
+    var сolors = [
+          x, y, z,
+          x, y, z,
+          x,y,z,
+          q, w, i,
+          q, w, i,
+          q,w,i,
+      ];
+
+
+      colorBuffer = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(сolors), gl.STATIC_DRAW);
+}
+
+function draw() {
+    
+        gl.clearColor(getRandomValue(0, 100), getRandomValue(0, 100), getRandomValue(0, 100), getRandomValue(0, 100));
+        gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
+        gl.clear(gl.COLOR_BUFFER_BIT);
+    
+        gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+        gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute,
+                             vertexBuffer.itemSize, gl.FLOAT, false, 0, 0);
+    
+        gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
+        gl.vertexAttribPointer(shaderProgram.vertexColorAttribute,
+                            vertexBuffer.itemSize, gl.FLOAT, false, 0, 0);
+    
+        gl.drawElements(gl.TRIANGLES, indexBufferTriag.numberOfItems, gl.UNSIGNED_SHORT,0)
+        
+    }
+        
 window.onload=function(){
-    //document.getElementById("changeColorButton").addEventListener("click", changeColor);
-    // получаем элемент canvas
-    var canvas = document.getElementById("canvas3D");
-    try {
-        // Сначала пытаемся получить стандартный контекст WegGL
-        // Если не получится, обращаемся к экспериментальному контексту
-        gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
-    }
-    catch(e) {}
-   
-    // Если контекст не удалось получить, выводим сообщение
-      if (!gl) {
-        alert("Ваш браузер не поддерживает WebGL");
-      }
-    if(gl){
-        // установка размеров области рисования
-        gl.viewportWidth = canvas.width;
-        gl.viewportHeight = canvas.height;
-        // установка шейдеров 
-        initShaders();
-        // установка буфера вершин
-        initBuffers();
-        // покрасим фон в бледно-розовый цвет
-        //gl.clearColor(1.0, 0.0, 0.0, 0.5);
-        // отрисовка сцены
-        draw();   
-    }
+        
+            document.getElementById("changeColorButton").addEventListener('click', changeColor);
+            var canvas = document.getElementById("canvas3D");
+            try {
+                gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+            }
+            catch(e) {}
+        
+              if (!gl) {
+                alert("Ваш браузер не поддерживает WebGL");
+              }
+            if(gl){
+                gl.viewportWidth = canvas.width;
+                gl.viewportHeight = canvas.height;
+        
+                initShaders();
+        
+                initBuffers();
+        
+                draw();
+            }
+}
+
+function getRandomValue(min, max) {
+    return (Math.random() * (max - min) + min) / 100;
+}
+
+function changeColor() {
+    initBuffers();
+    draw();
 }
