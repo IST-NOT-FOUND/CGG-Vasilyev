@@ -20,7 +20,21 @@
                 <li class="breadcrumb-item"><a href="../labrab3.html">Лабораторная 3</a></li>
                 <li class="breadcrumb-item active">Установка цвета вершины</li>
             </ol>
-
+            <canvas id="canvas3D" width="400" height="300">Ваш браузер не поддерживает элемент canvas</canvas>
+            <script id="shader-fs" type="x-shader/x-fragment">
+            varying highp vec4 vColor;
+              void main(void) {
+                gl_FragColor = vColor;
+              }
+            </script>
+            <script id="shader-vs" type="x-shader/x-vertex">
+            attribute vec3 aVertexPosition;
+            attribute vec3 aVertexColor;
+            varying highp vec4 vColor;
+            void main(void) {
+                gl_Position = vec4(aVertexPosition, 1.0);
+                vColor = vec4(aVertexColor, 1.0);
+            }
         <script src="../../js/jquery-3.2.1.min.js" type="text/javascript"></script>
         <script src="../../js/umd/popper.min.js"></script>
         <script src="../../js/bootstrap.min.js" type="text/javascript"></script>
