@@ -47,7 +47,8 @@ function getShader(type,id) {
  
  function initBuffers() {
     
-       vertices =[ 
+       vertices =[  
+           //БУКВА В
            -0.5, 0.0, 0.0,
            -0.5, 1.0, 0.0,
                0.0, 0.75, 0.0,
