@@ -43,7 +43,7 @@
             vLightWeighting = vec3(1.0, 1.0, 1.0);
         }
     </script>
-    
+
 <body>
     <nav class="navbar navbar-inverse">
             <div class="container-fluid">
@@ -58,7 +58,31 @@
             <li class="breadcrumb-item"><a href="../labrab7.html">Лабораторная 7</a></li>
             <li class="breadcrumb-item active"><a href="#"></a>Персональное задание</a></li>
         </ol>
+    
+    <canvas id="canvas3D" width="500" height="400">
+        Ваш браузер не поддерживает элемент canvas
+    </canvas>
 
+    <div id="control-panel-block">
+    <table>
+        <tbody>
+            <tr>
+            <td><b>Выберите цветовую совокупность: </b>
+            </td>
+            <tr></tr>
+            <td> R: <input type="text" id="ambientRed" value="0.5">
+            </td>
+            <tr></tr>
+            <td> G: <input type="text" id="ambientGreen" value="0.4">
+            </td>
+            <tr></tr>
+            <td> B: <input type="text" id="ambientBlue" value="0.2">
+            </td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+  
 
 <script type="text/javascript" src="../../js/three.min.js"></script>
 <script type="text/javascript" src="../../js/jquery-3.2.1.min.js"></script>
