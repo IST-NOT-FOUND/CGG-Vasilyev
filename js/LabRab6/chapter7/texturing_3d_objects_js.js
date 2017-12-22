@@ -60,69 +60,84 @@ function getShader(type,id) {
 }
  
 function initBuffers() {
- 
-    var vertices =[
-                // лицевая часть
-                -0.5, -0.5, 0.5,
-                -0.5, 0.5, 0.5,
-                 0.5, 0.5, 0.5,
-                 0.5, -0.5, 0.5,
-                // задняя часть 
-                -0.5, -0.5, -0.5,
-                -0.5, 0.5, -0.5,
-                 0.5, 0.5, -0.5,
-                 0.5, -0.5, -0.5
-                 ];
-                  
-    var indices = [ // лицевая часть
-                0, 1, 2, 
-                2, 3, 0,
-                //нижняя часть
-                0, 4, 7, 
-                7, 3, 0,
-                // левая боковая часть
-                0, 1, 5,
-                5, 4, 0, 
-                // правая боковая часть
-                2, 3, 7, 
-                7, 6, 2,
-                // верхняя часть
-                2, 1, 6,
-                6, 5, 1,
-                // задняя часть
-                4, 5, 6,
-                6, 7, 4,
-            ];
- 
-  vertexBuffer = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
-  vertexBuffer.itemSize = 3;
- 
-    indexBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
-    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), gl.STATIC_DRAW);
-    indexBuffer.numberOfItems = indices.length; 
-   
-  // Координаты текстуры
-  var textureCoords = [
-                0.0, 0.0,
-                0.0, 1.0,
-                1.0, 1.0,
-                1.0, 0.0,
-                 
-                0.0, 0.0,
-                0.0, 1.0,
-                1.0, 1.0,
-                1.0, 0.0,
-                 
-                 ];
-  // Создание буфера координат текстуры
-  textureCoordsBuffer = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, textureCoordsBuffer);
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(textureCoords), gl.STATIC_DRAW);
-    textureCoordsBuffer.itemSize=2;
-}
+    
+       var vertices =[
+                   // лицевая часть
+                   -0.5, -0.5, 0.5,
+                   -0.5, 0.5, 0.5,
+                    0.5, 0.5, 0.5,
+                    0.5, -0.5, 0.5,
+                   // задняя часть 
+                   -0.5, -0.5, -0.5,
+                   -0.5, 0.5, -0.5,
+                    0.5, 0.5, -0.5,
+                    0.5, -0.5, -0.5,
+                     
+                    // левая боковая часть
+                    -0.5, -0.5, 0.5,
+                   -0.5, 0.5, 0.5,
+                   -0.5, 0.5, -0.5,
+                   -0.5, -0.5, -0.5,
+                    
+                   // правая боковая часть
+                    0.5, -0.5, 0.5,
+                   0.5, 0.5, 0.5,
+                    0.5, 0.5, -0.5,
+                    0.5, -0.5, -0.5
+                    ];
+                     
+       var indices = [ // лицевая часть
+                   0, 1, 2, 
+                   2, 3, 0,
+                   // задняя часть
+                   4, 5, 6,
+                   6, 7, 4,
+                   //левая боковая часть
+                   8, 9, 10, 
+                   10, 11, 8,
+                   // правая боковая часть
+                   12, 13, 14, 
+                   14, 15, 12
+               ];
+    
+     vertexBuffer = gl.createBuffer();
+     gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+     vertexBuffer.itemSize = 3;
+    
+       indexBuffer = gl.createBuffer();
+       gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
+       gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), gl.STATIC_DRAW);
+       indexBuffer.numberOfItems = indices.length; 
+      
+     // Координаты текстуры
+     var textureCoords = [
+                   0.0, 0.0,
+                   0.0, 1.0,
+                   1.0, 1.0,
+                   1.0, 0.0,
+                    
+                   0.0, 0.0,
+                   0.0, 1.0,
+                   1.0, 1.0,
+                   1.0, 0.0,
+                    
+                   0.0, 0.0,
+                   0.0, 1.0,
+                   1.0, 1.0,
+                   1.0, 0.0,
+                    
+                   0.0, 0.0,
+                   0.0, 1.0,
+                   1.0, 1.0,
+                   1.0, 0.0 
+               ];
+     // Создание буфера координат текстуры
+     textureCoordsBuffer = gl.createBuffer();
+     gl.bindBuffer(gl.ARRAY_BUFFER, textureCoordsBuffer);
+     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(textureCoords), gl.STATIC_DRAW);
+       textureCoordsBuffer.itemSize=2;
+   }
   
 function draw() {    
  
